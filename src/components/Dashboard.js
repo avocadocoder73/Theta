@@ -3,7 +3,7 @@
 import { ReactComponent as Logo} from '../../public/THETA2.svg'
 import LogoText from './test'
 
-import { AppBar, Container, Button,Tabs,ListItem, Toolbar, List, Table, Box, SvgIcon, Paper, styled, createTheme, ThemeProvider, Drawer, IconButton, Typography, Divider, AccordionSummary, ListItemButton, AccordionDetails, Tab  } from "@mui/material"
+import { AppBar, Container, Button,Tabs,ListItem, Toolbar, List, Table, Box, SvgIcon, Paper, styled, createTheme, ThemeProvider, Drawer, IconButton, Typography, Divider, AccordionSummary, ListItemButton, AccordionDetails, Tab, TextField, TableContainer, TableHead, TableRow, TableBody  } from "@mui/material"
 import { useEffect, useState } from "react"
 import Accordion from '@mui/material/Accordion';
 import useTheme from "@mui/material/styles/useTheme"
@@ -14,12 +14,19 @@ import RequestPageIcon from '@mui/icons-material/RequestPage';
 import InsertChartIcon from '@mui/icons-material/InsertChart';
 import AddAlertIcon from '@mui/icons-material/AddAlert';
 import useMediaQuery from "@mui/material/useMediaQuery";
+import TableCell from '@mui/material/TableCell';
 import $ from 'jquery'
+import axios from 'axios'
+import { DataGrid } from '@mui/x-data-grid';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import Home from './Home';
+import { Route, Routes } from 'react-router-dom';
+import Options from './Options';
 
 
-
-
-export default function Dashboard()
+export default function Dashboard({prop})
 {
 
 useEffect(() => {
@@ -45,6 +52,22 @@ const [news , setNews] = useState({fed:false, sec:false, finra:false, dtcc:false
                 dark:"#000000"
                 
             }
+        },
+        typography:{
+            fontFamily:'Satoshi-Variable'
+        },
+        components:{
+            MuiCssBaseline:{
+                styleOverrides:`@font-face {
+  font-family: 'Satoshi-Variable';
+  src: url("../fonts/Satoshi-Medium.woff2") format('woff2'),
+    url('../fonts/Satoshi-Medium.woff') format('woff'),
+    url('../fonts/Satoshi-Medium.ttf') format('truetype');
+  font-weight: 300 900;
+  font-display: swap;
+  font-style: normal;
+}`
+            }
         }
     })
 
@@ -59,41 +82,56 @@ const [news , setNews] = useState({fed:false, sec:false, finra:false, dtcc:false
     }
 
 
+    function createData(id,timestamp, ticker, callput,exp,  size, cost, tradecon)
+    {
+        return {id:id,time: timestamp,ticker: ticker, callput: callput,exp: exp,size: size,cost: cost,tradetype: tradecon}
+    }
+
+    const rows = [
+
+        createData("1"," 1:49:18.783 PM", "AAPL", "Call", "2023-05-19", "2", "0.05", "Automatic Execution"),
+        createData("2","1:49:18.783 PM", "AAPL", "Call", "2023-05-19", "2", "0.05", "Automatic Execution"),
+        createData("3"," 1:49:18.783 PM", "AAPL", "Call", "2023-05-19", "2", "0.05", "Automatic Execution"),
+        createData("4"," 1:49:18.783 PM", "AAPL", "Call", "2023-05-19", "2", "0.05", "Automatic Execution"),
+        createData("5"," 1:49:18.783 PM", "AAPL", "Call", "2023-05-19", "2", "0.05", "Automatic Execution"),
+        createData("6"," 1:49:18.783 PM", "AAPL", "Call", "2023-05-19", "2", "0.05", "Automatic Execution"),
+        createData("7"," 1:49:18.783 PM", "AAPL", "Call", "2023-05-19", "2", "0.05", "Automatic Execution"),
+        createData("8"," 1:49:18.783 PM", "AAPL", "Call", "2023-05-19", "2", "0.05", "Automatic Execution")
+  ]
+    
+    const columns = [
+        {field: 'id', headerName:"ID"},
+        {field: 'time', headerName: 'Timestamp'},
+        {field: 'ticker', headerName: 'Ticker'},
+        {field: 'callput', headerName: 'Call/Put'},
+        {field: 'exp', headerName: 'Expiration'},
+        {field: 'size', headerName: 'Size'},
+        {field: 'cost', headerName: 'Cost'},
+        {field: 'tradetype', headerName: 'Trade Conditions', width:160},
+
+
+    ]
+
+    const tickers =[
+
+        {tick:"$MSFT", percent:4.13, name:"Microsoft Corporation"  },
+        {tick:"$GME",  percent: 5,name: "Gamestop Corporation" },
+        {tick:"$AMC", percent:6,name:"AMC Theatres" },
+        {tick:"$SPY",  percent:13.23 ,name: "SPY ETF"},
+        {tick:"$SPX",percent: 20 ,name: "SPX ETF"},
+        {tick:"$HSI", percent:5.123,name: "Hang Seng Index" },
+        {tick:"$GOTU",  percent: 7.23 ,name: "Gaotu Techedu"},
+        {tick:"$NVDA", percent: 0.29 ,name: "Nvidia Corporation"},
+        {tick:"$AMZN",  percent: 3,name: "Amazon Corporation"}
+    ]
+   
 
     async function RSS(url)
     {
-    /*    
-$.ajax({
-    url: url,
-    crossDomain:true,
-    type:"GET",
-    data:{
-        format:'xml',
-    },
-    success: function (xmlData) {
-        
-        $(xmlData).find("item").each(function () {
-            var title = $(this).find("title").text();
-            var links = $(this).find("link").text()
-            console.log(title)
-            setTr((old) => [...old, title])
-           
-           
-        });
-    },
-    error: function (error) {
-        console.error("Error fetching RSS feed: " + error);
+       let p = await axios.get(url)
+           console.log(p.data)
     }
-
-});
-     */
-    const parser = new RSSParser()
-
-    const parse = async url => {
-        const feed = await parser.parseURL('https://www.sec.gov/rss/rules/proposed.xml')
-        console.log(feed.title)
-    }
-    }
+    
 
  
 
@@ -107,16 +145,11 @@ $.ajax({
             </IconButton>
             <Logo sx={{height:"40px", width:'120px'}}></Logo>
             <LogoText></LogoText>
+            <TextField sx={{"& .MuiInputBase-root":{height:"30px",}, width:"600px", marginLeft:'20px'}} placeholder='Search for anything'></TextField>
         </Toolbar>
-        <Drawer sx={{ '& .MuiPaper-root':{backgroundColor:"primary.main"}, '& .MuiDrawer-paper':{width:"auto", marginTop:"40px"}}} open={open} variant={'persistent'}><Paper variant='outlined' sx={{height:"100%", width:"100%"}}><Box sx={{backgroundColor:"primary.main", alignItems:"center", display:"flex", marginTop:'50px'}}><Button href={'/dashboard'}sx={{justifyContent:"flex-start", width:'200px'}}><HomeIcon sx={{fill:"white", margin:"10px"}}></HomeIcon><Typography sx={{textTransform:"none", color:"white", fontFamily:"Satoshi-Variable"}}>Dashboard</Typography></Button></Box><Box sx={{backgroundColor:"primary.main", alignItems:"center", display:"flex"}}><Button href={'/dashboard/options'}sx={{justifyContent:"flex-start", width:'200px'}}><RequestPageIcon sx={{fill:"white", margin:"10px"}}></RequestPageIcon><Typography sx={{textTransform:"none", color:"white", fontFamily:"Satoshi-Variable"}}>Options</Typography></Button></Box><Box sx={{backgroundColor:"primary.main", alignItems:"center", display:"flex"}}><Button href={'/dashboard/stocks'}sx={{justifyContent:"flex-start", width:'200px'}}><InsertChartIcon sx={{fill:"white", margin:"10px"}}></InsertChartIcon><Typography sx={{textTransform:"none", color:"white", fontFamily:"Satoshi-Variable"}}>Stocks</Typography></Button></Box><Box sx={{backgroundColor:"primary.main", alignItems:"center", display:"flex"}}><Accordion sx={{"&.MuiPaper-root":{boxShadow:"none"}, justifyContent:"flex-start", width:'200px'}}><AccordionSummary href='/dashboard/filings' expandIcon={<NewspaperIcon sx={{color:"white"}}></NewspaperIcon>}><Typography sx={{textTransform:"none", color:"white", fontFamily:"Satoshi-Variable"}}>Filings/News</Typography></AccordionSummary><AccordionDetails><List><ListItemButton href='/dashboard/filings'>Overview</ListItemButton><ListItemButton color={news.fed ? "secondary" : "primary"} onClick={() => setNews({...news, fed:true})} href='/dashboard/fed'>Federal Register</ListItemButton><ListItemButton>SEC</ListItemButton><ListItemButton>FINRA</ListItemButton><ListItemButton>DTCC</ListItemButton><ListItemButton>NSCC</ListItemButton><ListItemButton>Company News</ListItemButton><ListItemButton>Global News</ListItemButton></List></AccordionDetails></Accordion></Box><Box sx={{backgroundColor:"primary.main", alignItems:"center", display:"flex"}}><Button href='/dashboard/alerts'sx={{justifyContent:"flex-start", width:'200px'}}><AddAlertIcon sx={{fill:"white", margin:"10px"}}></AddAlertIcon><Typography sx={{textTransform:"none", color:"white", fontFamily:"Satoshi-Variable"}}>Alerts</Typography></Button></Box></Paper></Drawer>
+        <Drawer sx={{ '& .MuiPaper-root':{backgroundColor:"primary.main"}, '& .MuiDrawer-paper':{width:"auto", marginTop:"40px"}}} open={open} variant={'persistent'}><Paper variant='outlined' sx={{height:"100%", width:"100%"}}><Box sx={{backgroundColor:"primary.main", alignItems:"center", display:"flex", marginTop:'50px'}}><Button href={'/dashboard'}sx={{justifyContent:"flex-start", width:'200px'}}><HomeIcon sx={{fill:"white", margin:"10px"}}></HomeIcon><Typography sx={{textTransform:"none", color:"white", fontFamily:"Satoshi-Variable"}}>Dashboard</Typography></Button></Box><Box sx={{backgroundColor:"primary.main", alignItems:"center", display:"flex"}}><Button href={'/options'}sx={{justifyContent:"flex-start", width:'200px'}}><RequestPageIcon sx={{fill:"white", margin:"10px"}}></RequestPageIcon><Typography sx={{textTransform:"none", color:"white", fontFamily:"Satoshi-Variable"}}>Options</Typography></Button></Box><Box sx={{backgroundColor:"primary.main", alignItems:"center", display:"flex"}}><Button href={'/stocks'}sx={{justifyContent:"flex-start", width:'200px'}}><InsertChartIcon sx={{fill:"white", margin:"10px"}}></InsertChartIcon><Typography sx={{textTransform:"none", color:"white", fontFamily:"Satoshi-Variable"}}>Stocks</Typography></Button></Box><Box sx={{backgroundColor:"primary.main", alignItems:"center", display:"flex"}}><Accordion sx={{"&.MuiPaper-root":{boxShadow:"none"}, justifyContent:"flex-start", width:'200px'}}><AccordionSummary href='/dashboard/filings' expandIcon={<NewspaperIcon sx={{color:"white"}}></NewspaperIcon>}><Typography sx={{textTransform:"none", color:"white", fontFamily:"Satoshi-Variable"}}>Filings/News</Typography></AccordionSummary><AccordionDetails><List><ListItemButton href='/dashboard/filings'>Overview</ListItemButton><ListItemButton color={news.fed ? "secondary" : "primary"} onClick={() => setNews({...news, fed:true})} href='/dashboard/fed'>Federal Register</ListItemButton><ListItemButton>SEC</ListItemButton><ListItemButton>FINRA</ListItemButton><ListItemButton>DTCC</ListItemButton><ListItemButton>NSCC</ListItemButton><ListItemButton>Company News</ListItemButton><ListItemButton>Global News</ListItemButton></List></AccordionDetails></Accordion></Box><Box sx={{backgroundColor:"primary.main", alignItems:"center", display:"flex"}}><Button href='/dashboard/alerts'sx={{justifyContent:"flex-start", width:'200px'}}><AddAlertIcon sx={{fill:"white", margin:"10px"}}></AddAlertIcon><Typography sx={{textTransform:"none", color:"white", fontFamily:"Satoshi-Variable"}}>Alerts</Typography></Button></Box><Box sx={{backgroundColor:"primary.main", alignItems:"center", display:"flex"}}><Button href='/dashboard/trading'sx={{justifyContent:"flex-start", width:'200px'}}><BorderColorIcon sx={{fill:"white", margin:"10px"}}></BorderColorIcon><Typography sx={{textTransform:"none", color:"white", fontFamily:"Satoshi-Variable"}}>Trading</Typography></Button></Box></Paper></Drawer>
         </AppBar>
-          <Container sx={{width:"100%", height:"883px", marginTop:"80px"}}>
-                    <Box sx={{display:"flex", width:"100%", height:"60%"}}><Paper elevation={5} sx={{width:"70%", height:"100%", background:"#262626"}}><Toolbar  sx={{"@media (min-width:600px)":{minHeight:"40px"}, borderBottom: "1px solid #313131"}}><Typography fontFamily={'Satoshi-Variable'} color={"white"}>Options Flow</Typography></Toolbar></Paper> <Paper sx={{marginLeft:"20px", width:"30%", height:"100%", background:"#262626"}}><Toolbar  sx={{"@media (min-width:600px)":{minHeight:"40px"}, borderBottom: "1px solid #313131"}}><Typography fontFamily={'Satoshi-Variable'} color={"white"}>Top gainers</Typography></Toolbar></Paper></Box>
-                    <Box sx={{display:"flex", marginTop:"20px", width:"100%", height:"35%"}}><Paper  sx={{width:"70%", height:"100%", background:"#262626"}}><Toolbar  sx={{"@media (min-width:600px)":{minHeight:"40px"}, borderBottom: "1px solid #313131"}}><Typography fontFamily={'Satoshi-Variable'} color={"white"}>Most traded tickers</Typography></Toolbar></Paper><Paper sx={{marginLeft:"20px", width:"30%", height:"100%", background:"#262626"}}><Toolbar  sx={{"@media (min-width:600px)":{minHeight:"40px"}, borderBottom: "1px solid #313131"}}><Typography fontFamily={'Satoshi-Variable'} color={"white"}>New Filings</Typography></Toolbar><Tabs value={4} sx={{ "& .MuiTabs-scrollButtons.Mui-disabled": { opacity: "0.3"}}}scrollButtons variant='scrollable'><Tab onClick={() => RSS('https://www.federalregister.gov/api/v1/documents.rss?conditions%5Bsection_ids%5D%5B%5D=1&conditions%5Bterm%5D=%22stock+exchange%22+%7C+%22commodity+futures%22')} label='FED'></Tab><Tab  onClick={() => RSS("https://www.sec.gov/rss/rules/proposed.xml")}label='SEC'></Tab><Tab onClick={() => RSS("http://feeds.finra.org/FINRARuleFilings")} label='FINRA'></Tab><Tab label='DTCC'></Tab><Tab label='NSCC'></Tab></Tabs><ListItem sx={{alignItems:"flex-start", display:"flex", flexDirection:"column"}}>{tr.slice(0,3).map((item) => <Box sx={{display:"flex", justifyContent:"space-between", width:'100%'}}><Typography sx={{margin:"5px", fontSize:"0.7rem", color:"white"}}>{item}</Typography><a>Read more</a></Box>)}</ListItem></Paper></Box>
-                      
-                       
-
-            </Container>
+           {prop}
         
             
           

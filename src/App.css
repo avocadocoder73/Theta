@@ -36,3 +36,12 @@
     transform: rotate(360deg);
   }
 }
+@font-face {
+  font-family: 'Satoshi-Variable';
+  src: url("../fonts/Satoshi-Medium.woff2") format('woff2'),
+    url('../fonts/Satoshi-Medium.woff') format('woff'),
+    url('../fonts/Satoshi-Medium.ttf') format('truetype');
+  font-weight: 300 900;
+  font-display: swap;
+  font-style: normal;
+}
