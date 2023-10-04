@@ -27,7 +27,7 @@
     "xml2js": "^0.6.2"
   },
   "scripts": {
-    "start": "react-scripts start ",
+    "start": "react-scripts start  ",
     "begin": "electron .",
     "build": "react-scripts build",
     "test": "react-scripts test",
