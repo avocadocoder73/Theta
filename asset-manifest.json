@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/Theta/static/css/main.7efc8b10.css",
-    "main.js": "/Theta/static/js/main.3641a60c.js",
+    "main.js": "/Theta/static/js/main.a0a3e8ed.js",
     "static/js/600.8f24a024.chunk.js": "/Theta/static/js/600.8f24a024.chunk.js",
     "static/media/Satoshi-Medium.ttf": "/Theta/static/media/Satoshi-Medium.759562088ba19068aef8.ttf",
     "static/media/Satoshi-Medium.woff": "/Theta/static/media/Satoshi-Medium.2419b46c96ed15331ba2.woff",
@@ -10,11 +10,11 @@
     "static/media/logo.svg": "/Theta/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/Theta/index.html",
     "main.7efc8b10.css.map": "/Theta/static/css/main.7efc8b10.css.map",
-    "main.3641a60c.js.map": "/Theta/static/js/main.3641a60c.js.map",
+    "main.a0a3e8ed.js.map": "/Theta/static/js/main.a0a3e8ed.js.map",
     "600.8f24a024.chunk.js.map": "/Theta/static/js/600.8f24a024.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.7efc8b10.css",
-    "static/js/main.3641a60c.js"
+    "static/js/main.a0a3e8ed.js"
   ]
 }
